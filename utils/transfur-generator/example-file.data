@@ -1,0 +1,64 @@
+#Every line starting with a '#' is treated as a comment, and replaced with '\n' before evaluation.
+#Options specified are read from top to bottom, so bottom entries override top ones.
+#
+
+#Specifies a stat preset for a transfur. Valid values are 'WOLF', 'CAT', 'DRAGON', FOX, SHARK, MERMAID-SHARK. Leave empty for default stats.
+#Warning: If a preset sets for example: 'BREATH=WEAK', then writing 'BREATH=' will override it to vanilla.
+PRESET=CAT
+
+#Multiplier. Overrides speed. Default is 1.075, vanilla is 1.0
+SPEED=1.0
+
+#Multiplier. Overrides Jump Strenght. Default is 1.0.
+JUMP=1.0
+
+#Multiplier. Overrides swim speed. Default is 0.95, 
+SWIM=1.0
+
+#Overrides breath type, Valid values are WEAK, AIR, STRONG, WATER, ANY, NONE. Default is AIR
+BREATH=AIR
+
+#Value. Overrides HP. Default: 24.0, vanilla: 20.0
+HEALTH=24.0
+
+#Value. Overrides step size. Default: 0.7, vanilla: 0.6
+STEP_SIZE=0.7
+
+#Sound the transfur makes when transfurred. Default is ''. Can be both resource location and a class method path.
+TRANSFUR_SOUND=net.ltxprogrammer.changed.init.ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()
+
+#Avalilable transfur modes. Valid values are ABSORBTION,
+TRANSFUR_MODE=
+
+#Default mode for transfur mode. Valid values are ABSORBING. Leave empty for replication.
+DEFAULT_TRANSFUR_MODE=ABSORBING
+
+#Abilities
+#The way abilities are handled, is via full class paths. So to add grab, you have to write net.ltxprogrammer.changed.ChangedAbilities.GRAB_ENTITY_ABILITY
+#WARNING: THIS PART IS NOT COMPILE CHECKED.
+#Abilities are checked line by line, and the entire array is treated as one value. DO NOT add non-ability entries here.
+
+ABILITIES=[
+
+net.ltxprogrammer.changed.ChangedAbilities.SWITCH_TRANSFUR_MODE
+
+#We can add an import statement in the file, so we don't have to write 
+
+ChangedAbilities.GRAB_ENTITY_ABILITY
+ChangedAbilities.TOGGLE_NIGHT_VISION
+
+]
+
+#What mobs does the entity scare? Accepts path to a class.
+SCARES=[
+net.minecraft.world.entity.monster.Creeper
+]
+
+
+
+#The array of imports, that will be placed inside of the registering file, and inside generated transfur file.
+IMPORT=[
+
+net.ltxprogrammer.changed.ChangedAbilities
+
+]
