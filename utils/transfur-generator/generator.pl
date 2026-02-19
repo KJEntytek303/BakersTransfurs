@@ -13,7 +13,7 @@ my $VERSION = '0.1';
 
 my @files;
 my @prepared_files;
-
+my $should_crash;
 getlopt(@ARGV);
 my $argc = scalar(@files);
 
@@ -26,7 +26,7 @@ my $template = "./templates/generic.java.template";		#template file
 my $extend = "net.ltxprogrammer.changed.entity.ChangedEntity";	#which class to extend
 
 my @presets;
-my @attributes;
+my %attributes;
 my @abilities;
 my @scares;			#what mobs fear the variant
 my @imports;			#java class imports
@@ -51,8 +51,10 @@ my $gendered;			#this switches the script from generating 1 file, to generating 
 my $freezing_ticks;		#powder snow
 my $breathing_mode;
 my $aqua_affinity;
+my $powder_snow_walkable;
 my $transfur_colors;
 #my $latex_faction;		#DL/WL swimming and cover slowdown
+my $VARIANT_FILE;		#FILE* to a variant
 
 my @registered_transfurs;
 my @final_imports;
@@ -64,25 +66,156 @@ my @final_imports;
 #if @files is empty, recompile all entries in ./variants
 if ($argc == 0)
 {
-	@files = `ls -1 ./variants`;
-	foreach (@files) {
-		generateTransfur($_);
-	}
+	opendir(my $D, './variants') or die "Compilation Error: Can't open directory ./variants: $!.
+Compilation aborted\n";
+	@files = readdir($D);
+	closedir($D);
+}
 
+
+foreach (@files) {
+	generateTransfur($_);
 }
 
 sub generateTransfur {
-	open
+	my $mode = 'NORMAL';
+	open($VARIANT_FILE, "<", $_[0]);
+	foreach(<VARIANT_FILE>) {
+		loop_begin:
+		if ($mode == 'NORMAL') { #{{{
+			if ( /^TEMPLATE=(.+)/ ) { #TODO
 	
+			}
 	
-}
+			if ( /^[A-Z_]+-=\[\h*/ ) { #if array opening {{{
+				$mode ='ARRAY';
+				goto loop_begin; #reevaluate as array.
+			} # }}}
+	
+			if ( /^TRANSFUR_SOUND=(([a-z\._0-9])*.?([a-zA-Z0-9]+))/ ) {# {{{
+				#TODO
+			}# }}}
+	
+			if ( /^TRANSFUR_MODE=(ABSORBING|REPLICATING|NONE)\h*/ ) { #{{{
+				$transfur_mode = $1;
+				next;
+			} #}}}
+	
+			if ( /^MINING=(WEAK|NORMAL|STRONG)\h*/ ) { #{{{
+				$mining_speed=$1;
+				next;
+			} #}}}
+	
+			if ( /^LEGS=(0|2|4)\h*/ ) { #{{{
+				$legs = $1; 
+				next;
+			} #}}}
+	
+			if ( /^ENTITY_SHAPE=(ANTRO|FERAL|TAUR|NAGA|MER)\h*/ ) { #{{{
+				$entity_shape = $1;
+				next;
+			} #}}}
+	
+			if ( /^SHOW_HOTBAR=(true|false)\h*/ ) { #{{{
+				$show_hotbar = $1;
+				next;
+			} #}}}
+	
+			if ( /^ITEMS_IN_MAIN_HAND=(true|false)\h*/ ) { #{{{
+				$items_in_main_hand = $1;
+				next;
+			} #}}}
+	
+			if ( /^ITEMS_IN_OFF_HAND=(true|false)\h*/ ) { #{{{
+				$items_in_offhand = $1;
+				next;
+			} #}}}
+	
+			if ( /^BLOCK_INTERACTION=(true|false)\h*/ ) { #{{{
+				$block_interaction = $1;
+				next;
+			} #}}}
+	
+			if ( /^BLOCK_BREAKING=(true|false)\h*/ ) { #{{{
+				$block_breaking = $1;
+				next;
+			} #}}}
+	
+			if ( /^FLY=(NONE|CT|ELYTRA|BOTH)\h*/ ) {# {{{
+				$fly = $1;
+				next;
+			}# }}}
+	
+			if ( /^JUMPS=(\d+)\h*/ ) {# {{{
+				$jumps = $1;
+				next;
+			}# }}}
+	
+			if ( /^VISION=(NORMAL|NIGHT_VISION|BLIND|REDUCED|VAVE_VISION)\h*/ ) {# {{{
+				$vision = $1;
+				next;
+			}# }}}
+	
+			if ( /^CLIMB=(true|false)\h*/ ) { #{{{
+				$climb = $1;
+				next;
+			} #}}}
+	
+			if ( /^SAFE_FALL_DIST=(\d+\.\d+)\h*/ ) {# {{{
+				$safe_fall = $1;
+				next;
+			}# }}}
+	
+			if ( /^Z_OFFSET=(\d+\.\d+)\h*/ ) {# {{{
+				$z_offset = $1;
+				next;
+			}# }}}
+	
+			if ( /^GENDERED=(true|false)\h*/ ) {# {{{
+				$gendered = $1;
+				next;
+			}# }}}
+			
+			if ( /^TICKS_TO_FREEZE=(\d+)\h*/ ) {# {{{
+				$freezing_ticks = $1;
+				next;
+			}# }}}
+	
+			if ( /^BREATH=(NORMAL|WATER|BOTH|NONE)\h*/ ) {# {{{
+				$breathing_mode = $1;
+				next;
+			}# }}}
+	
+			if ( /^AQUA_AFFINITY=(true|false)\h*/ ){# {{{
+				$aqua_affinity = $1;
+				next;
+			}# }}}
+	
+			if ( /^POWDER_SNOW_WALKABLE=(true|false)\h*/ ){# {{{
+				$powder_snow_walkable = $1;
+				next;
+			}# }}}
+	
+			if ( /^TRANFUR_COLORS=(0x[0-9a-fA-F]{,6})\h*/ ) {# {{{
+				$transfur_colors = $1;
+				next;
+			}# }}}
+	
+			}
+		} #}}}
+
+		if ( $mode == 'ARRAY' ) {
+
+		}
+	}
+
 
 sub resetValues { #{{{
 	$template = "./templates/generic.java.template";		
 	$extend = "net.ltxprogrammer.changed.entity.ChangedEntity";	
 
 	@presets = ();
-	@attributes = ();
+	%attributes = ();
 	@abilities = ();
 	@scares = ();		
 	@imports = ();		
