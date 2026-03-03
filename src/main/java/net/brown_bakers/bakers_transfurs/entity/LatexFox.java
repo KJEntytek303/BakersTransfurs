@@ -15,7 +15,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.level.Level;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,6 +31,7 @@ import static net.brown_bakers.bakers_transfurs.init.InitTransfurs.TF_REGISTRY;
 public class LatexFox extends ChangedEntity implements IEntityInit
 {
 	
+	//TODO: Update documentation
 	/***********************************************************
 	 * READ THE FUCKING MANUAL BEFORE COMMENTING IT'S UNREADABLE.
 	 *
@@ -85,9 +85,7 @@ public class LatexFox extends ChangedEntity implements IEntityInit
 		
 		//TODO Init scares
 		
-		scares = (aggressor, target) -> {
-			return AbstractVillager.class.isInstance(target) && aggressor.getType().is(ChangedTags.EntityTypes.LATEX);
-		};
+		scares = null;
 		
 		LATEX_FOX_VARIANT = TF_REGISTRY.register(name, LatexFox::getTFInitBuilder);
 	}
@@ -119,7 +117,8 @@ public class LatexFox extends ChangedEntity implements IEntityInit
 			   visionType,
 			   miningStrength,
 			   itemUseMode,
-			   scares,
+			   /*scares,*/
+			   null,	//TODO: FIX THIS.
 			   transfurMode,
 			   abilities,
 			   cameraZOffset,
