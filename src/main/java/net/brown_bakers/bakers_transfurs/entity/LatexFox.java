@@ -39,7 +39,7 @@ public class LatexFox extends ChangedEntity implements IEntityInit
 			   ChangedEntities::overworldOnly,
 			   SpawnPlacements.Type.ON_GROUND,
 			   LatexFox::checkEntitySpawnRules,
-			   LatexFox::createLatexAttributes
+			   ChangedEntity::createLatexAttributes
 		);
 	}
 	
@@ -61,10 +61,6 @@ public class LatexFox extends ChangedEntity implements IEntityInit
 			   .cameraZOffset(0.0f)
 			   .sound(ChangedSounds.TRANSFUR_BY_LATEX.getId())
 			   .build();
-	}
-	
-	public static AttributeSupplier.Builder createLatexAttributes() {
-		return ChangedEntity.createLatexAttributes();
 	}
 	
 	public LatexFox(EntityType<? extends ChangedEntity> type, Level level) { super(type, level); }

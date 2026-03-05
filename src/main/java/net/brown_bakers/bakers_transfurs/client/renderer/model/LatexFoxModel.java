@@ -13,10 +13,11 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
+
+import static com.mojang.blaze3d.Blaze3D.process;
 
 public class LatexFoxModel extends AdvancedHumanoidModel<LatexFox> {
 	@Override
@@ -170,7 +171,7 @@ public class LatexFoxModel extends AdvancedHumanoidModel<LatexFox> {
 
 		PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(0, 40).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(5.0F, 1.5F, 0.0F));
 
-		return LayerDefinition.create(meshdefinition, 96, 96);
+		return LayerDefinition.create( meshdefinition, 96, 96);
 	}
 
 }
