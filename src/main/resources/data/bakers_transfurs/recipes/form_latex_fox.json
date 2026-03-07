@@ -1,0 +1,11 @@
+{
+	"type": "changed:infuser",
+	"ingredients": [
+		{"item": "changed:latex_base"},
+		{"item": "minecraft:orange_dye"},
+		{"item": "minecraft:sweet_berries"},
+		{"item": "minecraft:bone"},
+		{"item": "minecraft:emerald"}
+	],
+	"form": "bakers_transfurs:latex_fox"
+}
