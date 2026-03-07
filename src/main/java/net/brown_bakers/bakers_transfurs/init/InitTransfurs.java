@@ -10,7 +10,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class InitTransfurs
 {
 	public static DeferredRegister<TransfurVariant<?>> TF_REGISTRY = ChangedRegistry.TRANSFUR_VARIANT.createDeferred(BakersTransfurs.MODID);
-	//public static Map<String, RegistryObject<TransfurVariant<?>>> TF_REGISTRY_MAP;
 	
 	public static final RegistryObject<TransfurVariant<LatexFox>> LATEX_FOX_VARIANT = TF_REGISTRY.register("latex_fox", LatexFox::getTFInitBuilder);
 }

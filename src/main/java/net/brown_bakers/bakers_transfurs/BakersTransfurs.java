@@ -1,6 +1,7 @@
 package net.brown_bakers.bakers_transfurs;
 
 import net.brown_bakers.bakers_transfurs.init.InitEntities;
+import net.brown_bakers.bakers_transfurs.init.InitItems;
 import net.brown_bakers.bakers_transfurs.init.InitTransfurs;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +30,7 @@ public class BakersTransfurs
         MinecraftForge.EVENT_BUS.register(this);
         
         InitEntities.ENTITY_REGISTRY.register(modEventBus);
+        InitItems.ITEM_REGISTRY.register(modEventBus);
         InitTransfurs.TF_REGISTRY.register(modEventBus);
     }
     

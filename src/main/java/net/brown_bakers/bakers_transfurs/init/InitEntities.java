@@ -9,7 +9,6 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
@@ -52,8 +51,5 @@ public class InitEntities
 	}
 	
 
-	
-
-	
 	
 }
