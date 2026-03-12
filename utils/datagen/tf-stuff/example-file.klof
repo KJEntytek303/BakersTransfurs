@@ -5,7 +5,7 @@
 
 #Specifies a stat preset for a transfur.
 #Valid values are the same as file titles inside ./utils/transfur-generator/presets.
-#Warning: If a preset sets for example: 'BREATH=WEAK', then writing 'BREATH=' will override it to vanilla.
+#Warning: If a preset sets for example: 'BREATH=WEAK', then writing 'BREATH=NORMAL' will override it to vanilla.
 PRESETS=[
 CAT
 LATEX
@@ -37,31 +37,21 @@ TRANSFUR_MODE=ABSORBING
 #Valid values are WEAK, NORMAL, STRONG. Blank resolves to NORMAL
 MINING=NORMAL
 
-#Overrides the amount of legs a transfur has. This affects armor type it can use.
+#UNUSED Overrides the amount of legs a transfur has. This affects armor type it can use.
 #Valid values are 0, 2, 4 and '', which evaluates to 2.
-LEGS=2
+#LEGS=2
 
 #Overrides entity shape.
 #Valid values are ANTHRO, FERAL, TAUR, NAGA, MER. '' means ANTHRO
 ENTITY_SHAPE=ANTHRO
 
-#Overrides showing items in hotbar
-SHOW_HOTBAR=true
-
-#Overrides rendering of items in main hand
-ITEMS_IN_MAIN_HAND=true
-
-#Overrides rendering of items in off hand
-ITEMS_IN_OFF_HAND=true
-
-#Overrides the ability to interact with blocks
-BLOCK_INTERACTION=true
-
-#Overrides the ability to break blocks
-BLOCK_BREAK=true
+#Use item mode
+#Valid values: NORMAL, MOUTH, NONE
+USE_ITEM_MODE=NORMAL
 
 #Overrides if the variant can fly
 #Valid values are '', NONE, CT, ELYTRA, BOTH.
+#Warning: CT and ELYTRA are unused.
 FLY=NONE
 
 #Overrides the amount of jump charges the variant has. Set to '' or 0 for none.
@@ -82,7 +72,8 @@ SAFE_FALL_DIST=1.0
 Z_OFFSET=0.0
 
 #This will tell the compiler to generate a second variant with opposite gender
-#Warning: If you want different stats for the same transfur depending on gender (manta rays
+#Warning: If you want different stats for the same transfur depending on gender (manta rays)
+#you should use 2 separate templates.
 GENDERED=false
 
 #Overrides how long it takes for the variant to freeze, in ticks. Vanilla is 140
@@ -102,7 +93,7 @@ BREATH=AIR
 #Accepts class field paths
 #TODO
 
-#Overrides transfur colors
+#Overrides color on transfur.
 #Accepts integers.
 #Defaults to 0xf0f0f0
 TRANSFUR_COLORS=0xffffff
@@ -120,14 +111,13 @@ net.ltxprogrammer.changed.ChangedAbilities.GRAB_ENTITY_ABILITY
 net.ltxprogrammer.changed.ChangedAbilities.TOGGLE_NIGHT_VISION
 ]
 
-#Specifies what class should be extended. Accepts classpaths
-EXTEND=
+#Specifies what class should be extended. Accepts classpaths. Defaults to ChangedEntity.
+#EXTEND=
 
 #Force a function call to clear preset arrays.
 #This might be useful if you want to use a cat preset, without making creepers run away.
 #CLEAR_ABILITIES()
 #CLEAR_SCARES()
-#CLEAR_IMPORTS()
 
 #What mobs does the entity scare? Accepts path to a class.
 #Redundant entries generate a compile error.
@@ -148,6 +138,7 @@ net.minecraft.world.level.Level.OVERWORLD
 
 #ENTITY SPAWN RULES ARE DEFINED INSIDE A TEMPLATE FILE OR BY USING DERIVE
 
+#Additional builder parameters
 #net.minecraft.world.entity.EntityType.Builder argument, REQUIRED. Not checked at compile time. Defines entity size and other stuff.
 #valid options:
 #classpath
@@ -155,7 +146,7 @@ net.minecraft.world.level.Level.OVERWORLD
 #/*PERL_CENTAUR_CHANGED_BUILDER*/
 #/*PERL_SHARK_CHANGED_BUILDER*/
 #/*PERL_BUFFSHARK_CHANGED_BUILDER*/
-#/*PERL_CROCKODILE_CHANGED_BUILDER*/
+#/*PERL_CROCODILE_CHANGED_BUILDER*/
 #/*PERL_SQUOG_CHANGED_BUILDER*/
 #/*PERL_MERMAID_CHANGED_BUILDER*/
 #/*PERL_SNAKE_CHANGED_BUILDER*/

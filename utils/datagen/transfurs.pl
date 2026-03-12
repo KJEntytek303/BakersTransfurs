@@ -36,13 +36,9 @@ my @imports;			#java class imports
 my $transfur_sound;		#sound a variant makes when transfurring
 my $transfur_mode;		#default tf mode
 my $mining_speed;
-my $legs;			#amount of legs
+#my $legs;			#amount of legs
 my $entity_shape;		#entity shape enum. Assumes changed namespace, and is a subject to change
-my $show_hotbar;		#benigns have hidden hotbar
-my $items_in_main_hand;		#benings don't render items
-my $items_in_offhand;		#benigns and pups don't render items
-my $block_interaction;		#benigns can't interact
-my $block_breaking;		#benigns can't break blocks
+my $use_item_mode
 my $fly;
 my $jumps;			#jump charges
 my $vision;			#default vision type
