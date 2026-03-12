@@ -1,5 +1,9 @@
 {
+	"entity.bakers_transfurs.latex_cheetah_female": "Latex Cheetah Female",
+	"entity.bakers_transfurs.latex_cheetah_male": "Latex Cheetah Male",
 	"entity.bakers_transfurs.latex_fox": "Latex Fox",
 
-	"item.bakers_transfurs.latex_fox_spawn_egg": "Latex Fox Spawn Egg"
+	"item.bakers_transfurs.latex_fox_spawn_egg": "Latex Fox Spawn Egg",
+	"item.bakers_transfurs.latex_cheetah_male_spawn_egg": "Latex Male Spawn Egg",
+	"item.bakers_transfurs.latex_cheetah_female_spawn_egg": "Latex Female Spawn Egg"
 }

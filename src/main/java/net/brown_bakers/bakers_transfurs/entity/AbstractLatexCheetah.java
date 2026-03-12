@@ -28,8 +28,8 @@ public abstract class AbstractLatexCheetah extends ChangedEntity implements Gend
 	
 	@Override
 	public Color3 getTransfurColor(TransfurCause cause) {
-		return Color3.fromInt(0xE37107);
-	} //TODO: FIX
+		return Color3.fromInt(0xf2d882);
+	}
 	
 	@Override
 	public int getTicksRequiredToFreeze() { return 200; }

@@ -1,8 +1,8 @@
 package net.brown_bakers.bakers_transfurs.client.renderer;
 
 import net.brown_bakers.bakers_transfurs.BakersTransfurs;
-import net.brown_bakers.bakers_transfurs.client.renderer.model.LatexFoxModel;
-import net.brown_bakers.bakers_transfurs.entity.LatexFox;
+import net.brown_bakers.bakers_transfurs.client.renderer.model.LatexCheetahMaleModel;
+import net.brown_bakers.bakers_transfurs.entity.LatexCheetahMale;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
@@ -12,12 +12,12 @@ import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfM
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexFoxRenderer extends AdvancedHumanoidRenderer<LatexFox, LatexFoxModel> {
+public class LatexCheetahMaleRenderer extends AdvancedHumanoidRenderer< LatexCheetahMale, LatexCheetahMaleModel >
+{
+	public static final ResourceLocation DEFAULT_SKIN_LOCATION = BakersTransfurs.modResource("textures/entity/latex_cheetah_male.png");
 	
-	public static final ResourceLocation DEFAULT_SKIN_LOCATION = BakersTransfurs.modResource("textures/entity/latex_fox.png");
-	
-	public LatexFoxRenderer(EntityRendererProvider.Context context) {
-		super(context, new LatexFoxModel(context.bakeLayer(LatexFoxModel.LAYER_LOCATION)), ArmorLatexMaleWolfModel.MODEL_SET, 0.5f);
+	public LatexCheetahMaleRenderer(EntityRendererProvider.Context context) {
+		super(context, new LatexCheetahMaleModel(context.bakeLayer(LatexCheetahMaleModel.LAYER_LOCATION)), ArmorLatexMaleWolfModel.MODEL_SET, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel()));
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
 		this.addLayer(CustomEyesLayer.builder(this, context.getModelSet()).build());
@@ -25,7 +25,5 @@ public class LatexFoxRenderer extends AdvancedHumanoidRenderer<LatexFox, LatexFo
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(LatexFox entity) {
-		return DEFAULT_SKIN_LOCATION;
-	}
+	public ResourceLocation getTextureLocation(LatexCheetahMale pEntity) { return DEFAULT_SKIN_LOCATION; }
 }

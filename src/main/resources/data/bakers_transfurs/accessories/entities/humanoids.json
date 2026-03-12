@@ -1,6 +1,8 @@
 {
   "entities": [
-    "bakers_transfurs:latex_fox"
+    "bakers_transfurs:latex_fox",
+    "bakers_transfurs:latex_cheetah/male",
+    "bakers_transfurs:latex_cheetah/female"
   ],
   "slots": [
     "changed:body",

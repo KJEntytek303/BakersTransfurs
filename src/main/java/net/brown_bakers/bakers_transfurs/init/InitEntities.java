@@ -42,7 +42,7 @@ public class InitEntities
 	
 	public static final RegistryObject<EntityType<LatexFox>> LATEX_FOX = LatexFox.getEntityInitRObject();
 	public static final RegistryObject<EntityType<LatexCheetahMale>> LATEX_CHEETAH_MALE = LatexCheetahMale.getEntityInitRObject();
-	public static final RegistryObject<EntityType<LatexCheetahMale>> LATEX_CHEETAH_FEMALE = LatexCheetahFemale.getEntityInitRObject();
+	public static final RegistryObject<EntityType<LatexCheetahFemale>> LATEX_CHEETAH_FEMALE = LatexCheetahFemale.getEntityInitRObject();
 	
 	@SubscribeEvent
 	public static void init(FMLCommonSetupEvent event) {

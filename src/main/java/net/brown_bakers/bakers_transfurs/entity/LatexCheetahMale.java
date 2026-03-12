@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import static net.brown_bakers.bakers_transfurs.init.InitEntities.LATEX_CHEETAH_MALE;
 
-public class LatexCheetahMale extends AbstractLatexCheetah {
+public class LatexCheetahMale extends AbstractLatexCheetah implements GenderedEntity {
 	
 	public static EntityType.Builder<LatexCheetahMale> getEntityInitBuilder() {
 		return EntityType.Builder
@@ -25,9 +25,9 @@ public class LatexCheetahMale extends AbstractLatexCheetah {
 	
 	public static RegistryObject<EntityType<LatexCheetahMale>> getEntityInitRObject() {
 		return InitUtils.getEntityInitRObject(
-			   "latex_cheetah_male",
-			   0xE37107,	//TODO
-			   0x9E4F05,
+			   "latex_cheetah/male",
+			   0xf2d882,
+			   0xd1b24f,
 			   LatexCheetahMale.getEntityInitBuilder(),
 			   ChangedEntities::overworldOnly,
 			   SpawnPlacements.Type.ON_GROUND,

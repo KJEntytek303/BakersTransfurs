@@ -3,9 +3,7 @@ package net.brown_bakers.bakers_transfurs.entity;
 import net.brown_bakers.bakers_transfurs.init.InitUtils;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
-import net.ltxprogrammer.changed.init.ChangedAbilities;
-import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.init.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -13,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
 
 import static net.brown_bakers.bakers_transfurs.init.InitEntities.LATEX_CHEETAH_FEMALE;
-import static net.brown_bakers.bakers_transfurs.init.InitEntities.LATEX_CHEETAH_MALE;
 
 public class LatexCheetahFemale extends AbstractLatexCheetah {
 	
@@ -26,9 +23,9 @@ public class LatexCheetahFemale extends AbstractLatexCheetah {
 	
 	public static RegistryObject<EntityType<LatexCheetahFemale>> getEntityInitRObject() {
 		return InitUtils.getEntityInitRObject(
-			   "latex_cheetah_female",
-			   0xE37107,	//TODO
-			   0x9E4F05,
+			   "latex_cheetah/female",
+			   0xf2d882,
+			   0xd1b24f,
 			   LatexCheetahFemale.getEntityInitBuilder(),
 			   ChangedEntities::overworldOnly,
 			   SpawnPlacements.Type.ON_GROUND,
@@ -37,7 +34,7 @@ public class LatexCheetahFemale extends AbstractLatexCheetah {
 		);
 	}
 	
-	public static TransfurVariant<AbstractLatexCheetah> getTFInitBuilder()
+	public static TransfurVariant<LatexCheetahFemale> getTFInitBuilder()
 	{
 		return TransfurVariant.Builder
 			   .of(LATEX_CHEETAH_FEMALE)
