@@ -5,25 +5,23 @@ use strict;
 
 
 #global variables
-my $PACKAGE_PATH = '../../src/main/java/net/brown_bakers/bakers_transfurs/entity';
 my $VERSION = '0.1';
-
 
 #pre-main {{{
 
 my $errored=0;
-my $array_mode=0;
+my $mode='NORMAL';
+my $array='';
+my @infile = ();
 getsopt(@ARGV);
 
 
 #}}}
 
-
 #variables #{{{
 
-my $template = "./templates/generic.java.template";		#template file
+my $template = "data/java/tf-templates/generic-variant-template.java";	#template file
 my $extend = "net.ltxprogrammer.changed.entity.ChangedEntity";	#which class to extend
-my $config = "";
 
 my @presets=();
 my @attributes=();
@@ -41,7 +39,6 @@ my $jumps="";			#jump charges
 my $vision="";			#default vision type
 my $climb="";			#stiger climb
 my $z_offset="";		#camera z-offset used for taurs
-my $gendered="";			#this switches the script from generating 1 file, to generating 3.
 my $freezing_ticks="";		#powder snow
 my $breathing_mode="";
 my $aqua_affinity="";
@@ -53,21 +50,25 @@ my @spawn_dimensions="net.minecraft.world.level.Level.OVERWORLD";
 
 #}}}
 
-foreach ( <STDIN> ) {
+while ( ! eof STDIN ) {
+	push @infile, <STDIN>;
+}
+
+foreach ( @infile ) { #load config file
 	loop_begin:
 
-	if( /^;.*/ ) { 
+	if( ( $_ =~ /^;/ ) || ( $_ =~ /^\h*$/ ) ) { 
 		next;
 	}
 
 	if ($mode eq 'NORMAL') { #{{{
 
-		if ( /^[A-Z_]+-=\[\h*/ ) { #if array opening {{{
+		if ( $_ =~ /^[A-Z_]+=\[\h*/ ) { #if array opening {{{
 $mode ='ARRAY';
 			goto loop_begin; #reevaluate as array.
 		} # }}}
 
-		if ( /^TEMPLATE=(.+)/ ) { # {{{
+		if ( $_ =~ /^TEMPLATE=(.+)/ ) { # {{{
 			if(-f "templates/$1") {
 				$template = $1
 			}
@@ -85,102 +86,119 @@ $_";
 			next;
 		}# }}}
 
-		if ( /^TRANSFUR_SOUND=(.+)\h*/ ) {# unsafe {{{
+		if ( $_ =~ /^TRANSFUR_SOUND=(.+)\h*/ ) {# unsafe {{{
 			$transfur_sound = $1;
 			next;
 		}# }}}
 
-		if ( /^TRANSFUR_MODE=(ABSORBING|REPLICATING|NONE)\h*/ ) { #{{{
+		if ( $_ =~ /^TRANSFUR_MODE=(ABSORBING|REPLICATING|NONE)\h*/ ) { #{{{
 			$transfur_mode = $1;
 			next;
 		} #}}}
 
-		if ( /^MINING=(WEAK|NORMAL|STRONG)\h*/ ) { #{{{
+		if ( $_ =~ /^MINING=(WEAK|NORMAL|STRONG)\h*/ ) { #{{{
 			$mining_speed=$1;
 			next;
 		} #}}}
 
-		if ( /^ENTITY_SHAPE=(ANTRO|FERAL|TAUR|NAGA|MER)\h*/ ) { #{{{
+		if ( $_ =~ /^ENTITY_SHAPE=(ANTHRO|FERAL|TAUR|NAGA|MER)\h*/ ) { #{{{
 			$entity_shape = $1;
 			next;
 		} #}}}
 
-		if ( /^SHOW_HOTBAR=(true|false)\h*/ ) { #{{{
-			$show_hotbar = $1;
+		if ( $_ =~ /^USE_ITEM_MODE=(NORMAL|MOUTH|NONE)\h*/ ) { #{{{
+			$use_item_mode = $1;
 			next;
 		} #}}}
 
-		if ( /^USE_ITEM_MODE=(NORMAL|MOUTH|NONE)\h*/ ) { #{{{
-			$block_breaking = $1;
-			next;
-		} #}}}
-
-		if ( /^FLY=(NONE|CT|ELYTRA|BOTH)\h*/ ) {# {{{
+		if ( $_ =~ /^FLY=(NONE|CT|ELYTRA|BOTH)\h*/ ) {# {{{
 			$fly = $1;
 			next;
 		}# }}}
 
-		if ( /^JUMPS=(\d+)\h*/ ) {# {{{
+		if ( $_ =~ /^JUMPS=(\d+)\h*/ ) {# {{{
 			$jumps = $1;
 			next;
 		}# }}}
 
-		if ( /^VISION=(NORMAL|NIGHT_VISION|BLIND|REDUCED|VAVE_VISION)\h*/ ) {# {{{
+		if ( $_ =~ /^VISION=(NORMAL|NIGHT_VISION|BLIND|REDUCED|VAVE_VISION)\h*/ ) {# {{{
 			$vision = $1;
 			next;
 		}# }}}
 
-		if ( /^CLIMB=(true|false)\h*/ ) { #{{{
+		if ( $_ =~ /^CLIMB=(true|false)\h*/ ) { #{{{
 			$climb = $1;
 			next;
 		} #}}}
 
-		if ( /^Z_OFFSET=(\d+\.\d+)\h*/ ) {# {{{
+		if ( $_ =~ /^Z_OFFSET=(\d+\.\d+)\h*/ ) {# {{{
 			$z_offset = $1;
 			next;
 		}# }}}
 
-		if ( /^GENDERED=(true|false)\h*/ ) {# {{{
-			$gendered = $1;
-			next;
-		}# }}}
-		
-		if ( /^TICKS_TO_FREEZE=(\d+)\h*/ ) {# {{{
+		if ( $_ =~ /^TICKS_TO_FREEZE=(\d+)\h*/ ) {# {{{
 			$freezing_ticks = $1;
 			next;
 		}# }}}
 
-		if ( /^BREATH=(NORMAL|WATER|BOTH|NONE)\h*/ ) {# {{{
+		if ( $_ =~ /^BREATH=(NORMAL|WATER|ANY|NONE)\h*/ ) {# {{{
 			$breathing_mode = $1;
 			next;
 		}# }}}
 
-		if ( /^AQUA_AFFINITY=(true|false)\h*/ ){# {{{
+		if ( $_ =~ /^AQUA_AFFINITY=(true|false)\h*/ ){# {{{
 			$aqua_affinity = $1;
 			next;
 		}# }}}
 
-		if ( /^POWDER_SNOW_WALKABLE=(true|false)\h*/ ){# {{{
+		if ( $_ =~ /^POWDER_SNOW_WALKABLE=(true|false)\h*/ ){# {{{
 			$powder_snow_walkable = $1;
 			next;
 		}# }}}
 
-		if ( /^TRANFUR_COLORS=(0x[0-9a-fA-F]{,6})\h*/ ) {# {{{
-			$transfur_colors = $1;
+		if ( $_ =~ /^TRANSFUR_COLOR=(0x[0-9a-fA-F]{,6})\h*/ ) {# {{{
+			$transfur_color = $1;
 			next;
 		}# }}}
 
-		if ( /^ABILITY_COLOR_1ST=(0x[0-9a-fA-F]{,6})\h*/ ) {# {{{
+		if ( $_ =~ /^ABILITY_COLOR_1ST=(0x[0-9a-fA-F]{,6})\h*/ ) {# {{{
 			$egg_back = $1;
 			next;
 		}# }}}
 
-		if ( /^ABILITY_COLOR_2ND=(0x[0-9a-fA-F]{,6})\h*/ ) {# {{{
+		if ( $_ =~ /^ABILITY_COLOR_2ND=(0x[0-9a-fA-F]{,6})\h*/ ) {# {{{
 			$egg_front = $1;
 			next;
 		}# }}}
+		
+		#unused, but needed
+		if ( $_ =~ /^GENDERED=(true|false)/ ) {
+			next;
+		}
 
-	 #}}}
+		if ( $_ =~ /^BIOMES=/ ) {
+			next;
+		}
+
+		if ( $_ =~ /^MIN_SPAWN=(\d)*/ ) {
+			next;
+		}
+
+		if ( $_ =~ /^MAX_SPAWN=(\d)*/ ) {
+			next;
+		}
+
+		if ( $_ =~ /^SPAWN_WEIGHT=(\d)*/ ) {
+			next;
+		}
+		
+		if ( $_ =~ /^RENDERER_TYPE=/ ) {
+			next;
+		}
+
+		print STDERR "Invalid option $_\n";
+		$errored = 1;
+	} #}}}
 
 	if ( $mode eq 'ARRAY' ) { # {{{
 
@@ -210,7 +228,7 @@ $_";
 
 		if ( $array eq 'ATTRIBUTES' ) { #{{{
 			$_ =~ /(.+):(.+)\h*/;
-			$attributes{$1} = $2;
+			push @attributes, $2;
 			next;
 		} #}}}
 
@@ -226,33 +244,78 @@ $_";
 			next;
 		} #}}}
 		
+		if ( $array eq 'DIMENSIONS' ) { next; };
 
-
-		print "Unknown array definition: \"$array\", field: \"$_\"";
+		print STDERR "Unknown array definition: \"$array\", field: \"$_\"";
 		$errored = 1;
 		next;
 	} #}}}
 
 	$errored = 1;
-	die "Internal Compiler Error - bad mode: $array";
+	print STDERR "Internal Compiler Error - bad mode: $mode\n";
 }
 
-
-
+die 'Compikation aborted due to input errors' if $errored;
 #main
+#prepare arrays{{{
+foreach( @abilities ) {
+	$_ = ".addAbility(" . $_ . ")\n";
+}
 
-#feed the generator from STDIN;
-#evaluate CFG
-#print generated variant to STDOUT.
+foreach ( @scares ) {
+	$_ = ".scares(" . $_ . ".class)\n";
+}
 
+foreach ( @attributes ) {
+	$_ =~ /^(.+):^(.+)/;
+	my $attribute = $1;
+	my $value = $2;
 
+	$_ = "attributes.getInstance(" . $attribute . ".get().setBaseValue(" . $value . ");";
+}
+# }}}
 
+$transfur_sound = ( $transfur_sound eq '' ) ? '' : ".sound(" . $transfur_sound . ".getId())\n";
+
+my $TEMPLATE;
+open( $TEMPLATE, '<', $template ) or die "Couldn't open file $template, $!";
+my @mapped_file = <$TEMPLATE>;
+close ($TEMPLATE);
+
+foreach ( @mapped_file ) {
+	
+}
+
+print @abilities;
+print @attributes;
+print @scares;
+print @spawn_dimensions;
+
+print $transfur_sound;
+print $transfur_mode;
+print $mining_speed;
+print $entity_shape;
+print $use_item_mode;
+print $fly;
+print $jumps;
+print $vision;
+print $climb;
+print $z_offset;
+print $freezing_ticks;
+print $breathing_mode;
+print $aqua_affinity;
+print $powder_snow_walkable;
+print $transfur_color;
+print $egg_back;
+print $egg_front;
 
 
 sub getsopt {
-	if ($_ eq -h ) {
-		printHelp();
-		exit(0);
+	foreach (@_) {
+		if ($_ eq -h ) {
+			printHelp();
+			exit(0);
+		}
 	}
 }
 

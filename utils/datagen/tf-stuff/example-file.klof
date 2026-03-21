@@ -84,8 +84,8 @@ AQUA_AFFINITY=false
 POWDER_SNOW_WALKABLE=false
 
 ;Overrides variant breathing mode
-;Valid values are AIR, WATER, ANY, NONE.
-BREATH=AIR
+;Valid values are NORMAL, WATER, ANY, NONE.
+BREATH=NORMAL
 
 ;Overrides latex type
 ;Accepts class field paths
@@ -94,7 +94,7 @@ BREATH=AIR
 ;Overrides color on transfur.
 ;Accepts integers.
 ;Defaults to 0xf0f0f0
-TRANSFUR_COLORS=0xffffff
+TRANSFUR_COLOR=0xffffff
 
 ;Overrides ability colors. Accepts hex values only 
 ABILITY_COLOR_1ST=0xff0000
@@ -130,7 +130,7 @@ net.minecraft.world.level.Level.OVERWORLD
 ]
 
 ;Tag template to use when checking spawn biomes.
-BIOMES=
+;BIOME_PRESET=
 
 ;Pack spawns
 MIN_SPAWN=1
@@ -146,7 +146,7 @@ RENDERER_TYPE=HUMANOID
 ARMOR_TYPE=net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleCatModel
 
 ;if the model has iris. Default: true
-IRIS_PRESENT=true
+EYES_PRESENT=true
 
 ;Fixed iris colors.
 ;IRIS_1ST_COLOR=
