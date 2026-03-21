@@ -1,7 +1,12 @@
 #!/usr/bin/perl
 
+#DEPRECATED - USE 'find data -type f'
+#LEFT ONLY FOR WINDOWS COMPATIBILITY
+
 use strict;
 use warnings;
+
+print STDERR "Warning: This program is deprecated. Use 'find data -type f' shell utility."
 
 my @cached_files;
 discover( "data" );

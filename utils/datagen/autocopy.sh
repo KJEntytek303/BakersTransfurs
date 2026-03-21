@@ -1,5 +1,5 @@
 #!/bin/bash
-./discoverer.pl
+find data -type f > cache
 ./gtmpg.pl
 ./greg.pl < variants.greg
 
