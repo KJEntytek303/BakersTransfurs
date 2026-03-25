@@ -2,7 +2,7 @@
 #VKSTG - Validator of KJEntytek's Simple Transfur Generator
 
 use strict;
-use warnings;
+#use warnings; #ENABLE ONLY DURING TESTING, generally keep it disabled on production.
 
 my @mapped_file = ();
 my @IFILE = ();
@@ -16,7 +16,14 @@ while ( !eof STDIN ) {
 	push( @IFILE, <STDIN> );
 }
 
+
 my $i = 0;
+
+my @dependencies = ();
+
+reevaluate_file:
+
+
 foreach ( @IFILE ) {
 
 	$i++;
@@ -28,7 +35,7 @@ foreach ( @IFILE ) {
 
 	if ($mode eq 'NORMAL') { #{{{
 
-		if ( $_ =~ /^[A-Z_]+=\[\h*/ ) { #if array opening {{{
+		if ( $_ =~ /^([A-Z_]+)=\[\h*/ ) { #if array opening {{{
 			$mode ='ARRAY';
 			goto loop_begin; #reevaluate as array.
 		} # }}}
@@ -62,24 +69,25 @@ foreach ( @IFILE ) {
 		$_ =~ /^TRANSFUR_COLOR=(0x[0-9a-fA-F]{,6})\h*/ ||
 		$_ =~ /^ABILITY_COLOR_1ST=(0x[0-9a-fA-F]{,6})\h*/ ||
 		$_ =~ /^ABILITY_COLOR_2ND=(0x[0-9a-fA-F]{,6})\h*/ ||
+		$_ =~ /^LATEX_TYPE=(WHITE_LATEX|DARK_LATEX|NONE)/ ||
+		$_ =~ /^BUILDER=(.+)/ ||
 		$_ =~ /^MIN_SPAWN=(\d)*/ ||
 		$_ =~ /^MAX_SPAWN=(\d)*/ ||
 		$_ =~ /^SPAWN_WEIGHT=(\d)*/ ||
 		$_ =~ /^RENDERER_TYPE=/ ||
+		$_ =~ /^MULTIHANDED_RENDERER=(true|false)/ ||
 		$_ =~ /^ARMOR_TYPE=/ ||
 		$_ =~ /^EYES_PRESENT=(true|false)\h*$/ ||
 		$_ =~ /^IRIS_1ST_COLOR=0x([0-9a-fA-F]{,6})\h*/ ||
 		$_ =~ /^IRIS_2ND_COLOR=0x([0-9a-fA-F]{,6})\h*/ ||
 		$_ =~ /^SCLERA_COLOR=0x([0-9a-fA-F]{,6})\h*/ ||
 		$_ =~ /^GAS_MASK_LAYER=(.+)/ ||
-		$_ =~ /^ANIM_PRESET=(.)+\h*$/ ||
-		$_ =~ /^MODEL_SCALE=(\d+\.\d+)/ ||
-		$_ =~ /^BUILDER=(\.+)\h*/||
-		$_ =~ /^GENDERED=(true|false)/ ||
-		$_ =~ /^LATEX_TYPE=(WHITE_LATEX|DARK_LATEX|NONE)/ ||
 		$_ =~ /^EMISSIVE_LAYER=(true|false)/ ||
-		$_ =~ /^BUILDER=(.+)/ ||
-		$_ =~ /^RIDING_OFFSET=(\d+\.\d+)/
+		$_ =~ /^TRANSLUCENT_LAYER=(true|false)/ ||
+		$_ =~ /^MODEL_SCALE=(\d+\.\d+)/ ||
+		$_ =~ /^ANIM_PRESET=(.)+\h*$/ ||
+		$_ =~ /^RIDING_OFFSET=(\d+\.\d+)/ ||
+		$_ =~ /^GENDERED=(true|false)/
 		) { push( @mapped_file, $_ ); next; }
 
 		if ( $_ =~ /^BIOME_PRESET=(\.)/ ) {
@@ -112,11 +120,20 @@ foreach ( @IFILE ) {
 			next;
 		}
 
-		if ( $array eq 'PRESETS' ||
-			$array eq 'ABILITIES' ||
+		if ( $array eq 'PRESETS' ) {
+			chomp($_);
+			if ( -f "data/klofs/presets/$_.klof" ) {
+				push( @dependencies, "data/klofs/presets/$_.klof");
+				next;
+			}
+
+			$errored = 1;
+			print STDERR "Error: data/klofs/presets/$_.klof: No such file, line $i";
+		}
+
+		if ( $array eq 'ABILITIES' ||
 			$array eq 'ATTRIBUTES' ||
 			$array eq 'SCARES' ||
-			$array eq 'SPAWN_DIMENSIONS' ||
 			$array eq 'DIMENSIONS'
 		) { push( @mapped_file, $_ ); next; };
 
@@ -129,6 +146,23 @@ foreach ( @IFILE ) {
 	print STDERR "Internal Compiler Error - bad mode: $mode, line $i\n";
 }
 
+if ( scalar(@dependencies) != 0 ) {
+	resolveDependencies($dependencies[0]);
+	shift( @dependencies );
+	goto reevaluate_file;
+}
+
+
 if ( $errored ) { die 'Errors occurred, compilation aborted'; }
 
 print @mapped_file;
+
+sub resolveDependencies() {
+	#Inject the file at the beginning.
+	my @tmp;
+ 	( @tmp = `./vkstg.pl < $_[0]` );
+	system( "./vkstg.pl < $_[0] > /dev/null" ) && die "Broken template file $_[0]\n";
+	splice (@mapped_file, 0, 0, @tmp);
+	@IFILE = @mapped_file;
+	@mapped_file = ();
+}
